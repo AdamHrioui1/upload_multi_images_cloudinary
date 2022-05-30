@@ -1,0 +1,147 @@
+import React, { useState, useEffect } from 'react'
+import axios from 'axios'
+import FormData from 'form-data'
+
+function UploadProduct() {
+    const [file, setFile] = useState([])
+    const [imagesData, setImagesData] = useState([])
+
+    const sendFiles = async (e) => {
+        // e.preventDefault()
+        setFile(e.target.files)
+        console.log(e.target.files)
+
+
+        try {
+            var allurls = []
+            for(let f of e.target.files) {
+                let formData = new FormData()
+                formData.append('files', f)
+
+                // console.log(formData)
+
+                const res = await axios.post('/api/upload', formData)
+                console.log(res.data)
+                allurls.push(res.data)
+
+            }
+            setImagesData(allurls)
+            console.log(allurls)
+
+        } catch (err) {
+            console.log(err)
+        }
+    }
+
+    console.log('imagesData: ', imagesData)
+
+    useEffect(() => {
+        console.log('files: ', file)
+        console.log('files.length: ', file.length)
+    }, [file])
+    
+
+    return (
+        <din>
+            <form onSubmit={sendFiles} name="files">
+                <input type="file" multiple onChange={e => sendFiles(e)} />
+                <input type="submit" value='send' />
+            </form>
+        </din>
+    )
+}
+
+export default UploadProduct
+
+/*
+// import React, { useEffect, useState } from 'react'
+// import axios from "axios";
+
+// function UploadProduct() {
+//     const [files, setfiles] = useState([])
+//     const [name, setname] = useState('')
+//     const [price, setprice] = useState('')
+
+//     const handleFile = async () => {
+
+//         try {
+//             if(!files || files.length === 0 || Object.keys(files).length === 0 || files === null)
+//                 return alert("No file uploaded!")
+
+//             var filesSize = 0
+//             files.forEach(f => {
+//                 filesSize += f.size
+//             });
+//             console.log(filesSize)
+
+//             if(filesSize > 10 * 1024 * 1024)
+//                 return alert("Files size is too big")
+
+//             var matchedFiles = []
+//             files.forEach(f => {
+//                 if(f.type === 'image/png' || f.type === 'image/jpeg' || f.type === 'image/webp' || f.type === 'image/svg+xml') {
+//                     matchedFiles.push(f)
+//                 }
+//             })
+//             console.log(matchedFiles)
+
+//             var formData = new FormData()
+//             console.log({...matchedFiles})
+//             formData.append('files', matchedFiles)
+//             console.log(formData)
+
+//             console.log('uploading...')
+            
+//             const res = await axios.post('/api/upload', formData, {
+//                 headers: { 
+//                     'content-type': 'multipart/form-data'
+//                 }
+//             })
+//             console.log(res)
+
+//         } catch (err) {
+//             console.log(err)
+//         }
+//     }
+
+//     const handleSubmit = async e => {
+//         e.preventDefault()
+//         try {
+//             const res = await axios.post('/api/product', {
+//                 name: name,
+//                 price: price,
+//                 images: [
+//                     {
+//                         public_id: "",
+//                         secure_url: ""
+//                     }
+//                 ]
+//             })
+
+//             console.log(res)
+//         } catch (err) {
+//             console.log(err.response)
+//         }
+//     }
+
+//     useEffect(() => {
+//         console.log(files)
+//         console.log(files.length)
+//     }, [files])
+
+//     return (
+//     <div>
+//         <form onSubmit={handleSubmit}>
+//             <input type="file" onChange={e => setfiles([...e.target.files])} multiple />
+//             <input type="text" placeholder='Please enter name...' onChange={(e) => setname(e.target.value)} value={name} />
+//             <input type="number" placeholder='Please enter price...' onChange={(e) => setprice(e.target.value)} value={price} />
+//             <input type="submit" value='Add' />
+//             <div onClick={() => handleFile()}>wooow</div>
+//         </form>
+//     </div>
+//   )
+// }
+
+// export default UploadProduct
+
+*/
