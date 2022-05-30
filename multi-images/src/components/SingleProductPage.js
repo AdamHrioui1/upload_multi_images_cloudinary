@@ -1,6 +1,6 @@
 import axios from 'axios'
 import React, { useState, useEffect } from 'react'
-import { useParams } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 
 function SingleProductPage() {
     const params = useParams()
@@ -28,9 +28,10 @@ function SingleProductPage() {
 
     return (
 
-        <div>
+        <div className='single__product_pages_details'>
+            <Link to='/products'>Products</Link>
             <div className="img_container">    
-                <img src={image} alt="" width={200} height={200} />
+                <img src={image ? image : images[0].secure_url } alt="" width={200} height={200} />
             </div>
 
             <div className="all_images">

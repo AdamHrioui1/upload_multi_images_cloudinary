@@ -20,10 +20,8 @@ function AllProducts() {
     
     if(allproducts.length === 0) return <h1>No data to show</h1>
 
-    console.log(allproducts)
-
     return (
-        <div>
+        <div className='all__products__container'>
             {
                 allproducts.map((product, index) => {
                     return <SingleProduct key={index} product={product} />
